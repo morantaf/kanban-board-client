@@ -1,11 +1,13 @@
 import React from "react";
 import LoginPage from "./components/LoginPage";
-import { Router } from "react-router";
+import AppBar from "./components/AppBar";
+import { Route } from "react-router";
 
 function App() {
   return (
     <div>
-      <Router exact path="/login" component={LoginPage} />
+      <AppBar />
+      <Route exact path="/login" component={LoginPage} />
     </div>
   );
 }
