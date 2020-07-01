@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { useMutation, useApolloClient } from "react-apollo";
 import styled from "styled-components";
 import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
@@ -73,7 +72,9 @@ export default function LoginForm(props) {
   // if (error) return <p>An error occurred</p>;
 
   const _confirm = async (data) => {
-    console.log(data);
+    if (data && data.login) {
+      saveTokens(data.login);
+    }
   };
 
   return (
