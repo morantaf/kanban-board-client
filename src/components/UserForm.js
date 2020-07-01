@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import { useMutation, useApolloClient } from "react-apollo";
 import styled from "styled-components";
+import { saveTokens } from "../manage-tokens";
+import { Mutation } from "react-apollo";
 
-const Wrapper = styled.form`
+//Creation of Styled components
+
+const Form = styled.form`
   padding: 4em;
   max-width: 400px;
   background: white;
@@ -43,6 +47,15 @@ const Title = styled.h2`
   align-self: center;
 `;
 
+const LOGIN_USER = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      refreshToken
+      accessToken
+    }
+  }
+`;
+
 export default function UserForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,26 +63,57 @@ export default function UserForm(props) {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
 
+  const client = useApolloClient();
+
+  // const [login, { data }] = useMutation(LOGIN_USER, {
+  //   onCompleted({login}) {
+  //     saveTokens(login)
+  //     if (loading) return <Loading />;
+  // if (error) return <p>An error occurred</p>;
+
+  // return <UserForm login={login} />;
+  //   }
+  // })
+  // if (loading) return <Loading />;
+  // if (error) return <p>An error occurred</p>;
+
+  const _confirm = async (data) => {
+    console.log(data);
+  };
+
   return (
-    <div>
-      <Wrapper>
-        <Title>Please enter your credentials</Title>
-        <TextField
-          type="text"
-          value={email}
-          name="email"
-          placeholder="E-mail address"
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <TextField
-          type="password"
-          value={password}
-          name="password"
-          placeholder="Enter your password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <Button type="submit">Log in</Button>
-      </Wrapper>
-    </div>
+    <Mutation
+      mutation={LOGIN_USER}
+      variables={{ email, password }}
+      onCompleted={(data) => _confirm(data)}
+    >
+      {(login, { data }) => (
+        <div>
+          <Form
+            onSubmit={(event) => {
+              event.preventDefault();
+              login({ variable: { email, password } });
+            }}
+          >
+            <Title>Please enter your credentials</Title>
+            <TextField
+              type="text"
+              value={email}
+              name="email"
+              placeholder="E-mail address"
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <TextField
+              type="password"
+              value={password}
+              name="password"
+              placeholder="Enter your password"
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <Button type="submit">Log in</Button>
+          </Form>
+        </div>
+      )}
+    </Mutation>
   );
 }
