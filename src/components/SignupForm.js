@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { useMutation, useApolloClient } from "react-apollo";
 import styled from "styled-components";
-import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
 
 //Creation of Styled components
@@ -47,11 +45,23 @@ const Title = styled.h2`
   align-self: center;
 `;
 
-const LOGIN_USER = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      refreshToken
-      accessToken
+const SIGNUP_USER = gql`
+  mutation Signup(
+    $email: String!
+    $password: String!
+    $firstName: String!
+    $lastName: String!
+    $username: String!
+  ) {
+    signup(
+      email: $email
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      username: $username
+    ) {
+      firstName
+      lastName
     }
   }
 `;
@@ -63,25 +73,20 @@ export default function LoginForm(props) {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
 
-  const _confirm = async (data) => {
-    console.log(data);
-  };
-
   return (
     <Mutation
-      mutation={LOGIN_USER}
-      variables={{ email, password }}
-      onCompleted={(data) => _confirm(data)}
+      mutation={SIGNUP_USER}
+      variables={{ email, password, firstName, lastName, username }}
     >
-      {(login, { data }) => (
+      {(signup) => (
         <div>
           <Form
             onSubmit={(event) => {
               event.preventDefault();
-              login({ variable: { email, password } });
+              signup({ variable: { email, password } });
             }}
           >
-            <Title>Please enter your credentials</Title>
+            <Title>Create an account</Title>
             <TextField
               type="text"
               value={email}
@@ -114,7 +119,7 @@ export default function LoginForm(props) {
               type="password"
               value={password}
               name="password"
-              placeholder="Enter your password"
+              placeholder="Enter a password"
               onChange={(event) => setPassword(event.target.value)}
             />
             <Button type="submit">Log in</Button>
