@@ -1,5 +1,5 @@
 import React from "react";
-import LoginPage from "./components/LoginPage";
+import LoginForm from "./components/LoginForm";
 import AppBar from "./components/AppBar";
 import { Route } from "react-router";
 
@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <AppBar />
-      <Route exact path="/login" component={LoginPage} />
+      <Route exact path="/login" component={LoginForm} />
     </div>
   );
 }

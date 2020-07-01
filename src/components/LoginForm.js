@@ -56,14 +56,9 @@ const LOGIN_USER = gql`
   }
 `;
 
-export default function UserForm(props) {
+export default function LoginForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-
-  const client = useApolloClient();
 
   // const [login, { data }] = useMutation(LOGIN_USER, {
   //   onCompleted({login}) {
