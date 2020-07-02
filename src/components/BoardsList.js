@@ -21,6 +21,7 @@ const Board = styled.div`
   transform: translate(0);
   color: white;
   font-weight: bold;
+  width: 150px;
 `;
 
 const Boards = styled.div`
