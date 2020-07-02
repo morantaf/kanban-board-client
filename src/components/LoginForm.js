@@ -100,7 +100,6 @@ export default function LoginForm(props) {
             />
             <Button type="submit">Log in</Button>
           </Form>
-          <Redirect to="/b/:username" />
         </div>
       )}
     </Mutation>
