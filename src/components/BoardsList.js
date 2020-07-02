@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, useQuery } from "react-apollo";
 import { Link } from "react-router-dom";
+import BoardForm from "./BoardForm";
 
 const BOARDS_QUERY = gql`
   {
@@ -63,6 +64,10 @@ const StyledButton = styled.button`
 `;
 
 function BoardsList() {
+  const [showForm, setShowForm] = useState(false);
+
+  const { refetch } = useQuery(BOARDS_QUERY);
+
   return (
     <Container>
       <h2>Personal Boards</h2>
@@ -81,8 +86,21 @@ function BoardsList() {
             ));
           }}
         </Query>
-        <StyledButton>Create a board</StyledButton>
+        <StyledButton
+          onClick={() => {
+            setShowForm(true);
+          }}
+        >
+          Create a board
+        </StyledButton>
       </Boards>
+      {showForm ? (
+        <BoardForm
+          setShowForm={setShowForm}
+          showForm={showForm}
+          refetch={refetch}
+        />
+      ) : null}
     </Container>
   );
 }
