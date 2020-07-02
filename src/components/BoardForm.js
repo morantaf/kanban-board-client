@@ -27,7 +27,7 @@ const Container = styled.div`
   background-color: white;
 `;
 
-const Button = styled.button`
+const StyledButton = styled.button`
   background: #9933ff;
   color: white;
   font-size: 1em;
@@ -69,7 +69,7 @@ export default function BoardForm(props) {
 
   const _confirm = (data) => {
     console.log(data);
-    props.setShowForm(!props.setShowForm);
+    props.setShowForm(!props.showForm);
     props.refetch();
   };
 
@@ -98,11 +98,12 @@ export default function BoardForm(props) {
             onCompleted={(data) => _confirm(data)}
           >
             {(mutation) => (
-              <Button onClick={mutation} style={{ width: "30%" }}>
-                Submit
-              </Button>
+              <StyledButton onClick={mutation}>Submit</StyledButton>
             )}
           </Mutation>
+          <StyledButton onClick={() => props.setShowForm(!props.showForm)}>
+            Cancel
+          </StyledButton>
         </Form>
       </Container>
     </Popup>
