@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
+import { Redirect } from "react-router-dom";
 
 //Creation of Styled components
 
@@ -51,6 +52,7 @@ const LOGIN_USER = gql`
     login(email: $email, password: $password) {
       refreshToken
       accessToken
+      username
     }
   }
 `;
@@ -59,19 +61,8 @@ export default function LoginForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const [login, { data }] = useMutation(LOGIN_USER, {
-  //   onCompleted({login}) {
-  //     saveTokens(login)
-  //     if (loading) return <Loading />;
-  // if (error) return <p>An error occurred</p>;
-
-  // return <UserForm login={login} />;
-  //   }
-  // })
-  // if (loading) return <Loading />;
-  // if (error) return <p>An error occurred</p>;
-
   const _confirm = async (data) => {
+    console.log(data);
     if (data && data.login) {
       saveTokens(data.login);
     }
@@ -83,12 +74,13 @@ export default function LoginForm(props) {
       variables={{ email, password }}
       onCompleted={(data) => _confirm(data)}
     >
-      {(login, { data }) => (
+      {(login) => (
         <div>
           <Form
             onSubmit={(event) => {
               event.preventDefault();
-              login({ variable: { email, password } });
+              login();
+              return <h1>blabla</h1>;
             }}
           >
             <Title>Please enter your credentials</Title>
