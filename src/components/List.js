@@ -34,6 +34,7 @@ const CardWrapper = styled.div`
 
 const BoldText = styled.p`
   font-weight: bold;
+  margin-left: 4%;
 `;
 
 const GET_CARDS = gql`
