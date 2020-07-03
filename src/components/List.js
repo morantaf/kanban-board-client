@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Query, useQuery } from "react-apollo";
 import gql from "graphql-tag";
+import Card from "./Card";
 
 const Wrapper = styled.div`
   margin: 10px 4px;
@@ -61,6 +62,11 @@ function List(props) {
     <Wrapper>
       <Content>
         <BoldText>{props.name}</BoldText>
+        <CardWrapper>
+          {cards.map((card) => {
+            return <Card title={card.title} />;
+          })}
+        </CardWrapper>
       </Content>
     </Wrapper>
   );
