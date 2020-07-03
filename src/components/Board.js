@@ -25,12 +25,6 @@ const GET_LISTS = gql`
 //   white-space: normal;
 // `;
 
-const Wrapper = styled.div`
-  margin: 10px 4px;
-  width: 272px;
-  height: 100%;
-`;
-
 const Div = styled.div`
   display: flex;
   height: 100%;
@@ -58,9 +52,7 @@ export default function Board() {
               return <p>{error.message}</p>;
             }
             return data.listsByBoard.map((list) => (
-              <Wrapper>
-                <List name={list.name} id={list.id} />
-              </Wrapper>
+              <List name={list.name} id={list.id} />
             ));
           }}
         </Query>
