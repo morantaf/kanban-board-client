@@ -62,6 +62,7 @@ const StyledButton = styled.button`
   border-radius: 5px;
   border: none;
   width: 175px;
+  cursor: pointer;
 `;
 
 function BoardsList() {
