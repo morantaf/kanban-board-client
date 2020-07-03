@@ -1,5 +1,10 @@
 import React from "react";
+import BoardsList from "./BoardsList";
 
 export default function ProfilePage() {
-  return <div></div>;
+  return (
+    <div>
+      <BoardsList />
+    </div>
+  );
 }

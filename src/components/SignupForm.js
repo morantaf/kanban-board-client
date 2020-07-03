@@ -83,7 +83,7 @@ export default function LoginForm(props) {
           <Form
             onSubmit={(event) => {
               event.preventDefault();
-              signup({ variable: { email, password } });
+              signup();
             }}
           >
             <Title>Create an account</Title>
