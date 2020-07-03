@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Query, useQuery } from "react-apollo";
 import gql from "graphql-tag";
 import Card from "./Card";
+import CardForm from "./CardForm";
 
 const Wrapper = styled.div`
   margin: 10px 4px;
@@ -48,7 +49,7 @@ const GET_CARDS = gql`
 `;
 
 function List(props) {
-  const { data, loading, error } = useQuery(GET_CARDS, {
+  const { data, loading, error, refetch } = useQuery(GET_CARDS, {
     variables: { listId: props.id },
   });
 
@@ -58,7 +59,6 @@ function List(props) {
 
   const cards = data.cardsByList;
 
-  console.log(cards);
   return (
     <Wrapper>
       <Content>
@@ -68,6 +68,7 @@ function List(props) {
             return <Card title={card.title} />;
           })}
         </CardWrapper>
+        <CardForm listId={props.id} refetch={refetch} />
       </Content>
     </Wrapper>
   );
