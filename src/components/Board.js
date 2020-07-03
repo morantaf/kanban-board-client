@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, useQuery } from "react-apollo";
 import { useParams } from "react-router-dom";
 import List from "./List";
+import ListForm from "./ListForm";
 
 const GET_LISTS = gql`
   query ListsByBoard($boardId: Int!) {
@@ -14,20 +15,26 @@ const GET_LISTS = gql`
   }
 `;
 
-// const List = styled.div`
-//   background-color: #ebecf0;
-//   border-radius: 3px;
-//   box-sizing: border-box;
-//   display: flex;
-//   flex-direction: column;
-//   max-height: 100%;
-//   position: relative;
-//   white-space: normal;
-// `;
+const GET_BOARD_NAME = gql`
+  query boardName($boardId: Int!) {
+    board(id: $boardId) {
+      title
+    }
+  }
+`;
 
 const Div = styled.div`
   display: flex;
-  height: 100%;
+  height: 90%;
+`;
+
+const Header = styled.div``;
+
+const Title = styled.h3`
+  margin: 0;
+  padding: 15px 0 15px 0;
+  color: white;
+  margin-left: 3%;
 `;
 
 const Page = styled.div`
@@ -36,13 +43,21 @@ const Page = styled.div`
 `;
 
 export default function Board() {
-  // const { data } = useQuery(GET_LISTS, { variables: { boardId: 1 } });
-
   const params = useParams();
   const boardId = parseInt(params.id);
 
+  const { refetch } = useQuery(GET_LISTS, { variables: { boardId } });
+  const { data, loading } = useQuery(GET_BOARD_NAME, {
+    variables: { boardId },
+  });
+
+  const boardName = data ? data.board.title : null;
+
   return (
     <Page>
+      <Header>
+        <Title>{boardName}</Title>
+      </Header>
       <Div>
         <Query query={GET_LISTS} variables={{ boardId }}>
           {({ loading, error, data }) => {
@@ -56,6 +71,7 @@ export default function Board() {
             ));
           }}
         </Query>
+        <ListForm refetch={refetch} boardId={boardId} />
       </Div>
     </Page>
   );
