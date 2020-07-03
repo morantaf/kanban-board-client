@@ -70,7 +70,7 @@ export default function ListForm(props) {
   return (
     <Wrapper>
       <Content>
-        <Text onClick={() => setShowForm(!showForm)}>+ Add a list</Text>
+        <Text onClick={() => setShowForm(!showForm)}>Add a list</Text>
         {showForm ? (
           <div>
             <TextField
