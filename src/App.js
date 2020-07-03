@@ -12,7 +12,7 @@ function App() {
   return (
     <div>
       <AppBar />
-      <Redirect from="/" to="/b/personal-board" />
+      {/* <Redirect exact from="/" to="/b/personal-board" /> */}
       <Route path="/board/:id" component={Board} />
       <Route exact path="/login" component={LoginForm} />
       <Route exact path="/signup" component={SignupForm} />
