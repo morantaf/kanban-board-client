@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Query, useQuery } from "react-apollo";
+import { Mutation, useQuery } from "react-apollo";
 import gql from "graphql-tag";
 import Card from "./Card";
 import CardForm from "./CardForm";
+import { MdDelete } from "react-icons/md";
 
 const Wrapper = styled.div`
   margin: 10px 4px;
@@ -38,9 +39,16 @@ const BoldText = styled.p`
   margin-left: 4%;
 `;
 
+const StyledIcon = styled(MdDelete)`
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+`;
+
 const GET_CARDS = gql`
   query cardsByList($listId: Int!) {
     cardsByList(listId: $listId) {
+      id
       title
       description
       status
@@ -48,9 +56,18 @@ const GET_CARDS = gql`
   }
 `;
 
+const DELETE_LIST = gql`
+  mutation deleteList($id: Int!) {
+    deleteList(id: $id) {
+      deleted
+    }
+  }
+`;
+
 function List(props) {
+  const id = props.id;
   const { data, loading, error, refetch } = useQuery(GET_CARDS, {
-    variables: { listId: props.id },
+    variables: { listId: id },
   });
 
   if (loading) return <p>Loading...</p>;
@@ -59,13 +76,37 @@ function List(props) {
 
   const cards = data.cardsByList;
 
+  const _deleted = () => {
+    props.refetch();
+  };
+
   return (
     <Wrapper>
       <Content>
-        <BoldText>{props.name}</BoldText>
+        <div>
+          <BoldText>
+            {props.name}
+            <Mutation
+              mutation={DELETE_LIST}
+              variables={{ id }}
+              ignoreResults={true}
+              onCompleted={() => _deleted()}
+            >
+              {(mutation) => <StyledIcon onClick={mutation} />}
+            </Mutation>
+          </BoldText>
+        </div>
+
         <CardWrapper>
           {cards.map((card) => {
-            return <Card title={card.title} />;
+            return (
+              <Card
+                title={card.title}
+                id={card.id}
+                GET_CARDS={GET_CARDS}
+                refetch={refetch}
+              />
+            );
           })}
         </CardWrapper>
         <CardForm listId={props.id} refetch={refetch} />
