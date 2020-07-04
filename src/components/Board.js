@@ -5,6 +5,8 @@ import { Query, useQuery } from "react-apollo";
 import { useParams } from "react-router-dom";
 import List from "./List";
 import ListForm from "./ListForm";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const GET_LISTS = gql`
   query ListsByBoard($boardId: Int!) {
@@ -58,21 +60,23 @@ export default function Board() {
       <Header>
         <Title>{boardName}</Title>
       </Header>
-      <Div>
-        <Query query={GET_LISTS} variables={{ boardId }}>
-          {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) {
-              console.log(error);
-              return <p>{error.message}</p>;
-            }
-            return data.listsByBoard.map((list) => (
-              <List name={list.name} id={list.id} refetch={refetch} />
-            ));
-          }}
-        </Query>
-        <ListForm refetch={refetch} boardId={boardId} />
-      </Div>
+      <DndProvider backend={HTML5Backend}>
+        <Div>
+          <Query query={GET_LISTS} variables={{ boardId }}>
+            {({ loading, error, data }) => {
+              if (loading) return <p>Loading...</p>;
+              if (error) {
+                console.log(error);
+                return <p>{error.message}</p>;
+              }
+              return data.listsByBoard.map((list) => (
+                <List name={list.name} id={list.id} refetch={refetch} />
+              ));
+            }}
+          </Query>
+          <ListForm refetch={refetch} boardId={boardId} />
+        </Div>
+      </DndProvider>
     </Page>
   );
 }
