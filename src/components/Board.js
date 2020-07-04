@@ -67,7 +67,7 @@ export default function Board() {
               return <p>{error.message}</p>;
             }
             return data.listsByBoard.map((list) => (
-              <List name={list.name} id={list.id} />
+              <List name={list.name} id={list.id} refetch={refetch} />
             ));
           }}
         </Query>
