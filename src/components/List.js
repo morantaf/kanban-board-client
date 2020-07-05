@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Mutation, useQuery } from "react-apollo";
 import gql from "graphql-tag";
 import Card from "./Card";
 import CardForm from "./CardForm";
 import { MdDelete } from "react-icons/md";
+import { useDrag, useDrop } from "react-dnd";
+import update from "immutability-helper";
 
 const Wrapper = styled.div`
   margin: 10px 4px;
@@ -23,7 +25,7 @@ const Content = styled.div`
   white-space: normal;
 `;
 
-const CardWrapper = styled.div`
+const CardsWrapper = styled.div`
   flex: 1 1 auto;
   margin-bottom: 0;
   overflow-y: auto;
@@ -64,28 +66,70 @@ const DELETE_LIST = gql`
   }
 `;
 
-function List(props) {
-  const id = props.id;
+function List({ id, index, listRefetch, name, moveList }) {
+  const type = "List";
+  const [cards, setCards] = useState([]);
+
+  const [{ isOver }, drop] = useDrop({
+    // Accept will make sure only these element type can be droppable on this element
+    accept: type,
+    hover(item) {
+      const dragIndex = item.index;
+      // current element where the dragged element is hovered on
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) return;
+
+      moveList(dragIndex, hoverIndex);
+
+      item.index = hoverIndex;
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
+
+  const [, drag] = useDrag({
+    item: { type: type, id, index },
+  });
+
   const { data, loading, error, refetch } = useQuery(GET_CARDS, {
     variables: { listId: id },
   });
+
+  useEffect(() => {
+    if (data) {
+      setCards(data.cardsByList);
+    }
+  }, [data]);
+
+  const moveCard = (dragIndex, hoverIndex) => {
+    const draggedCard = cards[dragIndex];
+
+    const updatedCards = update(cards, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, draggedCard],
+      ],
+    });
+
+    setCards(updatedCards);
+  };
 
   if (loading) return <p>Loading...</p>;
 
   if (error) return <p>Error : {error.message}</p>;
 
-  const cards = data.cardsByList;
-
   const _deleted = () => {
-    props.refetch();
+    listRefetch();
   };
 
   return (
-    <Wrapper>
-      <Content>
+    <Wrapper ref={drop}>
+      <Content ref={drag}>
         <div>
           <BoldText>
-            {props.name}
+            {name}
             <Mutation
               mutation={DELETE_LIST}
               variables={{ id }}
@@ -97,19 +141,37 @@ function List(props) {
           </BoldText>
         </div>
 
-        <CardWrapper>
-          {cards.map((card) => {
+        <CardsWrapper>
+          {isOver && (
+            <div
+              style={{
+                position: "absolute",
+                borderStyle: "dashed",
+                borderWidth: "1px",
+                top: 0,
+                left: 0,
+                height: "100%",
+                width: "100%",
+                zIndex: 1,
+                opacity: 1,
+                backgroundColor: "#9900ff",
+              }}
+            />
+          )}
+          {cards.map((card, index) => {
             return (
               <Card
                 title={card.title}
                 id={card.id}
                 GET_CARDS={GET_CARDS}
                 refetch={refetch}
+                index={index}
+                moveCard={moveCard}
               />
             );
           })}
-        </CardWrapper>
-        <CardForm listId={props.id} refetch={refetch} />
+        </CardsWrapper>
+        <CardForm listId={id} refetch={refetch} />
       </Content>
     </Wrapper>
   );
