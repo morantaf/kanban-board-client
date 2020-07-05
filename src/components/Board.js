@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Query, useQuery } from "react-apollo";
@@ -7,6 +7,7 @@ import List from "./List";
 import ListForm from "./ListForm";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import update from "immutability-helper";
 
 const GET_LISTS = gql`
   query ListsByBoard($boardId: Int!) {
@@ -47,33 +48,57 @@ const Page = styled.div`
 export default function Board() {
   const params = useParams();
   const boardId = parseInt(params.id);
+  const [lists, setLists] = useState([]);
 
-  const { refetch } = useQuery(GET_LISTS, { variables: { boardId } });
-  const { data, loading } = useQuery(GET_BOARD_NAME, {
+  const { data, loading, error, refetch } = useQuery(GET_LISTS, {
     variables: { boardId },
   });
 
-  const boardName = data ? data.board.title : null;
+  useEffect(() => {
+    if (data) {
+      setLists(data.listsByBoard);
+    }
+  }, [data]);
+
+  const moveList = (dragIndex, hoverIndex) => {
+    const draggedImage = lists[dragIndex];
+
+    const updatedLists = update(lists, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, draggedImage],
+      ],
+    });
+
+    setLists(updatedLists);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) {
+    console.log(error);
+    return <p>{error.message}</p>;
+  }
 
   return (
     <Page>
       <Header>
-        <Title>{boardName}</Title>
+        <Query query={GET_BOARD_NAME} variables={{ boardId }}>
+          {({ data }) => {
+            return <Title>{data ? data.board.title : null}</Title>;
+          }}
+        </Query>
       </Header>
       <DndProvider backend={HTML5Backend}>
         <Div>
-          <Query query={GET_LISTS} variables={{ boardId }}>
-            {({ loading, error, data }) => {
-              if (loading) return <p>Loading...</p>;
-              if (error) {
-                console.log(error);
-                return <p>{error.message}</p>;
-              }
-              return data.listsByBoard.map((list) => (
-                <List name={list.name} id={list.id} refetch={refetch} />
-              ));
-            }}
-          </Query>
+          {lists.map((list, index) => (
+            <List
+              name={list.name}
+              id={list.id}
+              listRefetch={refetch}
+              index={index}
+              moveList={moveList}
+            />
+          ))}
           <ListForm refetch={refetch} boardId={boardId} />
         </Div>
       </DndProvider>
