@@ -15,7 +15,7 @@ const BOARDS_QUERY = gql`
   }
 `;
 
-const Board = styled.div`
+const StyledTitle = styled.div`
   height: 80px;
   padding: 0;
   transform: translate(0);
@@ -62,6 +62,7 @@ const StyledButton = styled.button`
   border-radius: 5px;
   border: none;
   width: 175px;
+  cursor: pointer;
 `;
 
 function BoardsList() {
@@ -82,7 +83,7 @@ function BoardsList() {
             }
             return data.boards.map((board) => (
               <StyledLink to={`/board/${board.id}`}>
-                <Board>{board.title}</Board>
+                <StyledTitle>{board.title}</StyledTitle>
               </StyledLink>
             ));
           }}
