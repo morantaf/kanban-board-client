@@ -79,7 +79,7 @@ export default function Card({ id, refetch, title, index, moveCard }) {
               height: "100%",
               width: "100%",
               zIndex: 1,
-              opacity: 0,
+              opacity: 1,
               backgroundColor: "#ebecf0",
             }}
           />
