@@ -41,7 +41,7 @@ const Title = styled.h3`
 `;
 
 const Page = styled.div`
-  background-color: #9933ff;
+  background-color: #9900cc;
   height: 94.7vh;
 `;
 
