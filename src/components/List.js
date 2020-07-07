@@ -154,7 +154,7 @@ function List({ id, index, listRefetch, name, moveList }) {
                 width: "100%",
                 zIndex: 1,
                 opacity: 1,
-                backgroundColor: "#9900ff",
+                backgroundColor: "#8600b3",
               }}
             />
           )}
