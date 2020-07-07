@@ -92,18 +92,20 @@ export default function BoardForm(props) {
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Add a short description"
           />
-          <Mutation
-            mutation={CREATE_BOARD}
-            variables={{ title, description }}
-            onCompleted={(data) => _confirm(data)}
-          >
-            {(mutation) => (
-              <StyledButton onClick={mutation}>Submit</StyledButton>
-            )}
-          </Mutation>
-          <StyledButton onClick={() => props.setShowForm(!props.showForm)}>
-            Cancel
-          </StyledButton>
+          <div>
+            <Mutation
+              mutation={CREATE_BOARD}
+              variables={{ title, description }}
+              onCompleted={(data) => _confirm(data)}
+            >
+              {(mutation) => (
+                <StyledButton onClick={mutation}>Submit</StyledButton>
+              )}
+            </Mutation>
+            <StyledButton onClick={() => props.setShowForm(!props.showForm)}>
+              Cancel
+            </StyledButton>
+          </div>
         </Form>
       </Container>
     </Popup>
