@@ -50,9 +50,8 @@ const Title = styled.h2`
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      refreshToken
-      accessToken
-      username
+      jwt
+      userId
     }
   }
 `;
@@ -60,11 +59,13 @@ const LOGIN_USER = gql`
 export default function LoginForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loggedIn, setloggedIn] = useState(false);
 
   const _confirm = async (data) => {
     console.log(data);
     if (data && data.login) {
       saveTokens(data.login);
+      setloggedIn(true);
     }
   };
 
@@ -74,32 +75,36 @@ export default function LoginForm(props) {
       variables={{ email, password }}
       onCompleted={(data) => _confirm(data)}
     >
-      {(login) => (
+      {(login, { data }) => (
         <div>
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault();
-              login();
-              return <h1>blabla</h1>;
-            }}
-          >
-            <Title>Please enter your credentials</Title>
-            <TextField
-              type="text"
-              value={email}
-              name="email"
-              placeholder="E-mail address"
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <TextField
-              type="password"
-              value={password}
-              name="password"
-              placeholder="Enter your password"
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <Button type="submit">Log in</Button>
-          </Form>
+          {loggedIn ? (
+            <Redirect to={`b/${data.login.userId}`} />
+          ) : (
+            <Form
+              onSubmit={(event) => {
+                event.preventDefault();
+                login();
+                return <h1>blabla</h1>;
+              }}
+            >
+              <Title>Please enter your credentials</Title>
+              <TextField
+                type="text"
+                value={email}
+                name="email"
+                placeholder="E-mail address"
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <TextField
+                type="password"
+                value={password}
+                name="password"
+                placeholder="Enter your password"
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <Button type="submit">Log in</Button>
+            </Form>
+          )}
         </div>
       )}
     </Mutation>
