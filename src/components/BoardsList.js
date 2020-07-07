@@ -4,15 +4,32 @@ import gql from "graphql-tag";
 import { Query, useQuery } from "react-apollo";
 import { Link } from "react-router-dom";
 import BoardForm from "./BoardForm";
+import { useParams } from "react-router-dom";
 
 const BOARDS_QUERY = gql`
-  {
-    boards {
+  query Boards($userId: Int!) {
+    boards(userId: $userId) {
       id
       title
       description
     }
   }
+`;
+
+const ErrorBox = styled.form`
+  padding: 4em;
+  max-width: 400px;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 50px;
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
+`;
+
+const ErrorMessage = styled.h2`
+  align-self: center;
 `;
 
 const StyledTitle = styled.div`
@@ -30,7 +47,7 @@ const Boards = styled.div`
 
 const StyledLink = styled(Link)`
   &:link {
-    background-color: #9966ff;
+    background-color: #9900cc;
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -66,28 +83,44 @@ const StyledButton = styled.button`
 `;
 
 function BoardsList() {
+  const params = useParams();
+  const userId = parseInt(params.id);
   const [showForm, setShowForm] = useState(false);
 
-  const { refetch } = useQuery(BOARDS_QUERY);
+  const { data, error, loading, refetch } = useQuery(BOARDS_QUERY, {
+    variables: { userId },
+  });
 
+  if (loading) return <p>Loading...</p>;
+  if (error) {
+    const message = error.message.split(":");
+    console.log(message);
+    const authentication = message[1]
+      .split(" ")
+      .filter((word) => word.toLowerCase() === "authentication");
+
+    return authentication.length === 1 ? (
+      <ErrorBox>
+        <ErrorMessage>
+          You must login in order to access to your boards
+        </ErrorMessage>
+        <Link to="/login">Go to the login page</Link>{" "}
+      </ErrorBox>
+    ) : (
+      <ErrorBox>
+        <ErrorMessage>{message[1]}</ErrorMessage>
+      </ErrorBox>
+    );
+  }
   return (
     <Container>
       <h2>Personal Boards</h2>
       <Boards>
-        <Query query={BOARDS_QUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) {
-              console.log(error);
-              return <p>Must authenticate</p>;
-            }
-            return data.boards.map((board) => (
-              <StyledLink to={`/board/${board.id}`}>
-                <StyledTitle>{board.title}</StyledTitle>
-              </StyledLink>
-            ));
-          }}
-        </Query>
+        {data.boards.map((board) => (
+          <StyledLink to={`/board/${board.id}`}>
+            <StyledTitle>{board.title}</StyledTitle>
+          </StyledLink>
+        ))}
         <StyledButton
           onClick={() => {
             setShowForm(true);
