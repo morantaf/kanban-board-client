@@ -77,6 +77,7 @@ export default function LoginForm(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
+  const [signedUp, setsignedUp] = useState(false);
 
   return (
     <Mutation
@@ -89,48 +90,58 @@ export default function LoginForm(props) {
             onSubmit={(event) => {
               event.preventDefault();
               signup();
+              setsignedUp(true);
             }}
           >
-            <Title>Create an account</Title>
-            <TextField
-              type="text"
-              value={email}
-              name="email"
-              placeholder="E-mail address"
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <TextField
-              type="text"
-              value={firstName}
-              name="firstName"
-              placeholder="First name"
-              onChange={(event) => setFirstName(event.target.value)}
-            />
-            <TextField
-              type="text"
-              value={lastName}
-              name="lastName"
-              placeholder="Last Name"
-              onChange={(event) => setLastName(event.target.value)}
-            />
-            <TextField
-              type="text"
-              value={username}
-              name="username"
-              placeholder="Username"
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <TextField
-              type="password"
-              value={password}
-              name="password"
-              placeholder="Enter a password"
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <Button type="submit">Sign up</Button>
-            <StyledLink to="/login">
-              Already have an account ? Please log in
-            </StyledLink>
+            {signedUp ? (
+              <>
+                <Title>Thank you for signing up</Title>
+                <StyledLink to="/login">Go to log in</StyledLink>
+              </>
+            ) : (
+              <>
+                <Title>Create an account</Title>
+                <TextField
+                  type="text"
+                  value={email}
+                  name="email"
+                  placeholder="E-mail address"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <TextField
+                  type="text"
+                  value={firstName}
+                  name="firstName"
+                  placeholder="First name"
+                  onChange={(event) => setFirstName(event.target.value)}
+                />
+                <TextField
+                  type="text"
+                  value={lastName}
+                  name="lastName"
+                  placeholder="Last Name"
+                  onChange={(event) => setLastName(event.target.value)}
+                />
+                <TextField
+                  type="text"
+                  value={username}
+                  name="username"
+                  placeholder="Username"
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+                <TextField
+                  type="password"
+                  value={password}
+                  name="password"
+                  placeholder="Enter a password"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+                <Button type="submit">Sign up</Button>
+                <StyledLink to="/login">
+                  Already have an account ? Please log in
+                </StyledLink>
+              </>
+            )}
           </Form>
         </div>
       )}
