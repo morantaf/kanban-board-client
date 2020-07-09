@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { Query, useQuery, Mutation } from "react-apollo";
-import { useParams, Redirect } from "react-router-dom";
+import { Query, useQuery, useMutation } from "react-apollo";
+import { useParams } from "react-router-dom";
 import List from "./List";
 import ListForm from "./ListForm";
 import { DndProvider } from "react-dnd";
@@ -46,6 +46,30 @@ const GET_BOARD_NAME = gql`
   }
 `;
 
+const ErrorBox = styled.form`
+  padding: 4em;
+  max-width: 400px;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 50px;
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
+`;
+
+const ErrorMessage = styled.h2`
+  align-self: center;
+`;
+
+const UPDATE_LISTS_POSITION = gql`
+  mutation updateListsPositions($updatedLists: [ListInput]) {
+    updateListsPositions(updatedLists: $updatedLists) {
+      id
+    }
+  }
+`;
+
 const Div = styled.div`
   display: flex;
   height: 90%;
@@ -75,29 +99,52 @@ export default function Board() {
     variables: { boardId },
   });
 
+  const [updateListPosition] = useMutation(UPDATE_LISTS_POSITION);
+
   useEffect(() => {
     if (data) {
       setLists(data.listsByBoard);
     }
   }, [data]);
 
-  const moveList = (dragIndex, hoverIndex) => {
-    const draggedImage = lists[dragIndex];
+  const moveList = async (dragIndex, hoverIndex) => {
+    try {
+      const draggedImage = lists[dragIndex];
 
-    const updatedLists = update(lists, {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, draggedImage],
-      ],
+      const updatedLists = update(lists, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, draggedImage],
+        ],
+      });
+
+      setLists(updatedLists);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const updateList = async () => {
+    const updatedPositionsList = lists.map((object, index) => ({
+      id: object.id,
+      name: object.name,
+      position: index,
+    }));
+
+    updateListPosition({
+      variables: { updatedLists: updatedPositionsList },
     });
-
-    setLists(updatedLists);
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) {
+    const message = error.message.split(":");
     console.log(error);
-    return <p>{error.message}</p>;
+    return (
+      <ErrorBox>
+        <ErrorMessage>{message[1]}</ErrorMessage>
+      </ErrorBox>
+    );
   }
 
   return (
@@ -122,6 +169,7 @@ export default function Board() {
               listRefetch={refetch}
               index={index}
               moveList={moveList}
+              updateList={updateList}
             />
           ))}
           <ListForm refetch={refetch} boardId={boardId} />
