@@ -66,7 +66,7 @@ const DELETE_LIST = gql`
   }
 `;
 
-function List({ id, index, listRefetch, name, moveList }) {
+function List({ id, index, listRefetch, name, moveList, updateList }) {
   const type = "List";
   const [cards, setCards] = useState([]);
 
@@ -83,6 +83,9 @@ function List({ id, index, listRefetch, name, moveList }) {
       moveList(dragIndex, hoverIndex);
 
       item.index = hoverIndex;
+    },
+    drop() {
+      updateList();
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
