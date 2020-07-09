@@ -4,13 +4,13 @@ This project was born with the idea of enhancing my knowledge and skills to buil
 
 ## User stories
 
-As a user, I want to be able to create an account :heavy_check_mark:
-As a user, I want to be able to log in :heavy_check_mark:
-As a user, I want to be able to create a board :heavy_check_mark:
-As a user, I want to be able to create a list for a specific board :heavy_check_mark:
-As a user, I want to be able to create cards for specific lists :heavy_check_mark:
-As a user, I want to be able to delete and edit boards, lists, and cards :white_check_mark:
-As a user, I want to be able to move the cards :white_check_mark:
+- As a user, I want to be able to create an account :heavy_check_mark:
+- As a user, I want to be able to log in :heavy_check_mark:
+- As a user, I want to be able to create a board :heavy_check_mark:
+- As a user, I want to be able to create a list for a specific board :heavy_check_mark:
+- As a user, I want to be able to create cards for specific lists :heavy_check_mark:
+- As a user, I want to be able to delete and edit boards, lists, and cards :white_check_mark:
+- As a user, I want to be able to move the cards :white_check_mark:
 
 ### Legend
 
