@@ -127,7 +127,6 @@ export default function Board() {
   const updateList = async () => {
     const updatedPositionsList = lists.map((object, index) => ({
       id: object.id,
-      name: object.name,
       position: index,
     }));
 
