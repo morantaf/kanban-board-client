@@ -5,6 +5,7 @@ import { Query, useQuery } from "react-apollo";
 import { Link } from "react-router-dom";
 import BoardForm from "./BoardForm";
 import { useParams } from "react-router-dom";
+import { BsPerson } from "react-icons/bs";
 
 const BOARDS_QUERY = gql`
   query Boards($userId: Int!) {
@@ -114,7 +115,11 @@ function BoardsList() {
   }
   return (
     <Container>
-      <h2>Personal Boards</h2>
+      <div>
+        <h2>
+          <BsPerson /> Personal Boards
+        </h2>
+      </div>
       <Boards>
         {data.boards.map((board) => (
           <StyledLink to={`/board/${board.id}`}>
