@@ -57,3 +57,7 @@ The following update should be made to this project further on :
 - Improve the UI
 - Make it possible to move the cards from one list to another
 - Add the possibility to change the color of the boards
+
+## Back end
+
+You can find the repository for the back end [here](https://github.com/morantaf/trello-copy-server)
