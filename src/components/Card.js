@@ -39,7 +39,14 @@ const DELETE_CARD = gql`
   }
 `;
 
-export default function Card({ id, refetch, title, index, moveCard }) {
+export default function Card({
+  id,
+  refetch,
+  title,
+  index,
+  moveCard,
+  updateCard,
+}) {
   const type = "Card";
 
   const [{ isOver }, drop] = useDrop({
@@ -52,6 +59,9 @@ export default function Card({ id, refetch, title, index, moveCard }) {
       if (dragIndex === hoverIndex) return;
       moveCard(dragIndex, hoverIndex);
       item.index = hoverIndex;
+    },
+    drop() {
+      updateCard();
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),

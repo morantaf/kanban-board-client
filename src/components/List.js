@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Mutation, useQuery } from "react-apollo";
+import { Mutation, useQuery, useMutation } from "react-apollo";
 import gql from "graphql-tag";
 import Card from "./Card";
 import CardForm from "./CardForm";
@@ -66,9 +66,19 @@ const DELETE_LIST = gql`
   }
 `;
 
+const UPDATE_CARDS_POSITION = gql`
+  mutation updateCardsPositions($updatedCards: [CardInput]) {
+    updateCardsPositions(updatedCards: $updatedCards) {
+      id
+    }
+  }
+`;
+
 function List({ id, index, listRefetch, name, moveList, updateList }) {
   const type = "List";
   const [cards, setCards] = useState([]);
+
+  const [updateCardPosition] = useMutation(UPDATE_CARDS_POSITION);
 
   const [{ isOver }, drop] = useDrop({
     // Accept will make sure only these element type can be droppable on this element
@@ -117,6 +127,17 @@ function List({ id, index, listRefetch, name, moveList, updateList }) {
     });
 
     setCards(updatedCards);
+  };
+
+  const updateCard = async () => {
+    const updatedPositionsCard = cards.map((object, index) => ({
+      id: object.id,
+      position: index,
+    }));
+
+    updateCardPosition({
+      variables: { updatedCards: updatedPositionsCard },
+    });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -170,6 +191,7 @@ function List({ id, index, listRefetch, name, moveList, updateList }) {
                 refetch={refetch}
                 index={index}
                 moveCard={moveCard}
+                updateCard={updateCard}
               />
             );
           })}
