@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import { Mutation } from "react-apollo";
+import { Link } from "react-router-dom";
 
 //Creation of Styled components
 
@@ -42,6 +43,10 @@ const Button = styled.button`
 `;
 
 const Title = styled.h2`
+  align-self: center;
+`;
+
+const StyledLink = styled(Link)`
   align-self: center;
 `;
 
@@ -122,7 +127,10 @@ export default function LoginForm(props) {
               placeholder="Enter a password"
               onChange={(event) => setPassword(event.target.value)}
             />
-            <Button type="submit">Log in</Button>
+            <Button type="submit">Sign up</Button>
+            <StyledLink to="/login">
+              Already have an account ? Please log in
+            </StyledLink>
           </Form>
         </div>
       )}
