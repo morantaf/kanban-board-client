@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 //Creation of Styled components
 
@@ -44,6 +44,10 @@ const Button = styled.button`
 `;
 
 const Title = styled.h2`
+  align-self: center;
+`;
+
+const StyledLink = styled(Link)`
   align-self: center;
 `;
 
@@ -103,6 +107,9 @@ export default function LoginForm(props) {
                 onChange={(event) => setPassword(event.target.value)}
               />
               <Button type="submit">Log in</Button>
+              <StyledLink to="/signup">
+                Don't have an account ? Please sign up
+              </StyledLink>
             </Form>
           )}
         </div>
