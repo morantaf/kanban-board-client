@@ -138,7 +138,6 @@ export default function Board() {
   if (loading) return <p>Loading...</p>;
   if (error) {
     const message = error.message.split(":");
-    console.log(error);
     return (
       <ErrorBox>
         <ErrorMessage>{message[1]}</ErrorMessage>
@@ -169,6 +168,7 @@ export default function Board() {
               index={index}
               moveList={moveList}
               updateList={updateList}
+              key={list.id}
             />
           ))}
           <ListForm refetch={refetch} boardId={boardId} />

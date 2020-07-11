@@ -66,7 +66,6 @@ export default function LoginForm(props) {
   const [loggedIn, setloggedIn] = useState(false);
 
   const _confirm = async (data) => {
-    console.log(data);
     if (data && data.login) {
       saveTokens(data.login);
       setloggedIn(true);

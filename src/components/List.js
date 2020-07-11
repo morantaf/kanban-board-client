@@ -192,6 +192,7 @@ function List({ id, index, listRefetch, name, moveList, updateList }) {
                 index={index}
                 moveCard={moveCard}
                 updateCard={updateCard}
+                key={card.id}
               />
             );
           })}
