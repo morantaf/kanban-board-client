@@ -48,7 +48,7 @@ const Boards = styled.div`
 
 const StyledLink = styled(Link)`
   &:link {
-    background-color: #9900cc;
+    background-color: #ff0854;
     color: white;
     padding: 14px 25px;
     text-align: center;
