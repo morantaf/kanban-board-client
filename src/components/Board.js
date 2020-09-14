@@ -21,13 +21,12 @@ const GET_LISTS = gql`
 `;
 
 const Delete = styled.button`
-  background-color: hsla(0, 0%, 100%, 0.24);
+  background-color: #ebecf0;
   display: flex;
   position: absolute;
   top: 50px;
   right: 50px;
   white-space: normal;
-  color: white;
   cursor: pointer;
   border-radius: 3px;
   margin-top: 10px;
@@ -85,7 +84,6 @@ const Title = styled.h3`
 `;
 
 const Page = styled.div`
-  background-color: #9900cc;
   height: 94.7vh;
 `;
 
