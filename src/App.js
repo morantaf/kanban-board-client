@@ -7,6 +7,7 @@ import ProfilePage from "./components/ProfilePage";
 import { Redirect } from "react-router-dom";
 import { getTokens } from "./manage-tokens";
 import Board from "./components/Board";
+import Homepage from "./components/Homepage";
 
 function App() {
   const tokens = getTokens();
@@ -14,6 +15,7 @@ function App() {
   return (
     <div>
       <AppBar />
+      <Route exact path="/homepage" component={Homepage} />
       <Route exact path="/">
         {userId ? <Redirect to={`/b/${userId}`} /> : <Redirect to="/login" />}
       </Route>
