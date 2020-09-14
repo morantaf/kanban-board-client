@@ -2,6 +2,7 @@ import React from "react";
 import image from "../img/3594607.jpg";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { getTokens } from "../manage-tokens";
 
 const StyledImage = styled.img`
   height: 450px;
@@ -44,7 +45,7 @@ export default function Homepage() {
         <Body>
           <Title>Organize your tasks, work faster</Title>
           <h2>The agile solution to improve your productivity</h2>
-          <StyledLink>Go to your board</StyledLink>
+          <StyledLink to="/login">Go to your board</StyledLink>
         </Body>
         <Body>
           <StyledImage src={image} />
