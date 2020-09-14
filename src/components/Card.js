@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { useDrag, useDrop } from "react-dnd";
 
 const Wrapper = styled.div`
-  background-color: #fff;
+  background-color: #ffff99;
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   // cursor: pointer;
