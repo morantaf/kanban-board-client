@@ -8,7 +8,7 @@ import { getTokens } from "./manage-tokens";
 import "./index.css";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: "https://evening-garden-55376.herokuapp.com/graphql",
   request: (operation) => {
     const tokens = getTokens();
     if (tokens && tokens.jwt) {

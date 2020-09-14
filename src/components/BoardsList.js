@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { Query, useQuery } from "react-apollo";
+import { useQuery } from "react-apollo";
 import { Link } from "react-router-dom";
 import BoardForm from "./BoardForm";
 import { useParams } from "react-router-dom";
@@ -48,7 +48,7 @@ const Boards = styled.div`
 
 const StyledLink = styled(Link)`
   &:link {
-    background-color: #9900cc;
+    background-color: #ff0854;
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -95,7 +95,6 @@ function BoardsList() {
   if (loading) return <p>Loading...</p>;
   if (error) {
     const message = error.message.split(":");
-    console.log(message);
     const authentication = message[1]
       .split(" ")
       .filter((word) => word.toLowerCase() === "authentication");
@@ -122,7 +121,7 @@ function BoardsList() {
       </div>
       <Boards>
         {data.boards.map((board) => (
-          <StyledLink to={`/board/${board.id}`}>
+          <StyledLink key={board.id} to={`/board/${board.id}`}>
             <StyledTitle>{board.title}</StyledTitle>
           </StyledLink>
         ))}

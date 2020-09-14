@@ -30,7 +30,7 @@ const Container = styled.div`
 `;
 
 const StyledButton = styled.button`
-  background: #9933ff;
+  background: #ff0854;
   color: white;
   font-size: 1em;
   margin-bottom: 1em;
@@ -41,7 +41,7 @@ const StyledButton = styled.button`
   width: 30%;
   &:hover {
     background: white;
-    color: #9933ff;
+    color: #ff0854;
   }
 `;
 

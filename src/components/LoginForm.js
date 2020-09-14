@@ -37,6 +37,8 @@ const Button = styled.button`
   border-radius: 7px;
   width: 30%;
   align-self: center;
+  font-weight: bold;
+  cursor: pointer;
   &:hover {
     background: white;
     color: #9933ff;
@@ -66,7 +68,6 @@ export default function LoginForm(props) {
   const [loggedIn, setloggedIn] = useState(false);
 
   const _confirm = async (data) => {
-    console.log(data);
     if (data && data.login) {
       saveTokens(data.login);
       setloggedIn(true);
@@ -91,7 +92,7 @@ export default function LoginForm(props) {
                 return <h1>blabla</h1>;
               }}
             >
-              <Title>Please enter your credentials</Title>
+              <Title>SIGN IN</Title>
               <TextField
                 type="text"
                 value={email}
