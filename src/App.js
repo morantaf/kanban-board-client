@@ -15,9 +15,8 @@ function App() {
   return (
     <div>
       <AppBar />
-      <Route exact path="/homepage" component={Homepage} />
-      <Route exact path="/">
-        {userId ? <Redirect to={`/b/${userId}`} /> : <Redirect to="/login" />}
+      <Route exact path="/" component={Homepage}>
+        {userId ? <Redirect to={`/b/${userId}`} /> : null}
       </Route>
       <Route path="/board/:id" component={Board} />
       <Route exact path="/login" component={LoginForm} />
