@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { getTokens } from "../manage-tokens";
 
 const Bar = styled.div`
   background-color: #375b65;
@@ -33,15 +34,22 @@ const StyledLink = styled(Link)`
 `;
 
 export default function AppBar() {
+  const tokens = getTokens();
+  const userId = tokens ? tokens.userId : null;
   return (
     <Bar>
       <TitleWrapper>
         <Title>OrgaFlow</Title>
       </TitleWrapper>
-      <Nav>
-        <StyledLink to="/login">LOGIN</StyledLink>
-        <StyledLink to="/signup">SIGNUP</StyledLink>
-      </Nav>
+
+      {userId ? (
+        <StyledLink to={`/b/${userId}`}>Your board</StyledLink>
+      ) : (
+        <Nav>
+          <StyledLink to="/login">LOGIN</StyledLink>
+          <StyledLink to="/signup">SIGNUP</StyledLink>
+        </Nav>
+      )}
     </Bar>
   );
 }

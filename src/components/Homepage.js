@@ -39,13 +39,19 @@ const StyledLink = styled(Link)`
 `;
 
 export default function Homepage() {
+  const tokens = getTokens();
+  const userId = tokens ? tokens.userId : null;
   return (
     <div>
       <Container>
         <Body>
           <Title>Organize your tasks, work faster</Title>
           <h2>The agile solution to improve your productivity</h2>
-          <StyledLink to="/login">Go to your board</StyledLink>
+          {userId ? (
+            <StyledLink to={`/b/${userId}`}>Go to your board</StyledLink>
+          ) : (
+            <StyledLink to="/login">Go to your board</StyledLink>
+          )}
         </Body>
         <Body>
           <StyledImage src={image} />
