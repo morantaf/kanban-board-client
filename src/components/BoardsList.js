@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 import { Link } from "react-router-dom";
 import BoardForm from "./BoardForm";
 import { useParams } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const BOARDS_QUERY = gql`
   query Boards($userId: Int!) {
@@ -64,6 +65,30 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const LoadingIcon = styled(AiOutlineLoading3Quarters)`
+  height: 5em;
+  width: 5em;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Rotate = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  animation: ${rotate} 2s linear infinite;
+`;
+
 const Container = styled.div`
   margin-left: 100px;
   margin-top: 100px;
@@ -92,7 +117,12 @@ function BoardsList() {
     variables: { userId },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Rotate>
+        <LoadingIcon />
+      </Rotate>
+    );
   if (error) {
     const message = error.message.split(":");
     const authentication = message[1]

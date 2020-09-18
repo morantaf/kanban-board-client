@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import gql from "graphql-tag";
 import { Query, useQuery, useMutation } from "react-apollo";
 import { useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import { FaTimes } from "react-icons/fa";
 import DeleteForm from "./DeleteForm";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const GET_LISTS = gql`
   query ListsByBoard($boardId: Int!) {
@@ -79,12 +80,35 @@ const Header = styled.div``;
 const Title = styled.h3`
   margin: 0;
   padding: 15px 0 15px 0;
-  color: white;
   margin-left: 3%;
 `;
 
 const Page = styled.div`
   height: 94.7vh;
+`;
+
+const LoadingIcon = styled(AiOutlineLoading3Quarters)`
+  height: 5em;
+  width: 5em;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Rotate = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  animation: ${rotate} 2s linear infinite;
 `;
 
 export default function Board() {
@@ -133,7 +157,12 @@ export default function Board() {
     });
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Rotate>
+        <LoadingIcon />
+      </Rotate>
+    );
   if (error) {
     const message = error.message.split(":");
     return (
