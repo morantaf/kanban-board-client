@@ -14,14 +14,13 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  background-color: hsla(0, 0%, 100%, 0.24);
+  background-color: #ebecf0;
   border-radius: 3px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
   white-space: normal;
-  color: white;
 `;
 
 const TextField = styled.input`
@@ -78,7 +77,7 @@ export default function ListForm(props) {
               name="name"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Add a title to the list"
+              placeholder="Title"
             />
             <Mutation
               mutation={ADD_LIST}
