@@ -19,10 +19,12 @@ const Message = styled.h2`
 `;
 
 export default function ErrorMessage({ message }) {
+  const login = message.split(" ").filter((word) => word === "login");
+
   return (
     <Container>
-      <Message>You must login in order to access to your boards</Message>
-      {message.toLowerCase() === "authentication" ? (
+      <Message>{message}</Message>
+      {login.length === 1 ? (
         <Link to="/login">Go to the login page</Link>
       ) : null}
     </Container>
