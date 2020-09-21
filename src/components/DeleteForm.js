@@ -45,6 +45,10 @@ const StyledButton = styled.button`
   }
 `;
 
+const Text = styled.h4`
+  margin-left: 3%;
+`;
+
 const DELETE_BOARD = gql`
   mutation deleteList($id: Int!) {
     deleteBoard(id: $id) {
@@ -62,9 +66,7 @@ export default function DeleteForm({ setShowForm, boardId }) {
   return (
     <Popup>
       <Container>
-        <h4 style={{ marginLeft: "3%" }}>
-          Are you sure you want to delete this board ?
-        </h4>
+        <Text>Are you sure you want to delete this board ?</Text>
         <Mutation
           mutation={DELETE_BOARD}
           variables={{ id: boardId }}
