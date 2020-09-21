@@ -11,6 +11,7 @@ import update from "immutability-helper";
 import { FaTimes } from "react-icons/fa";
 import DeleteForm from "./DeleteForm";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import ErrorMessage from "./ErrorMessage";
 
 const GET_LISTS = gql`
   query ListsByBoard($boardId: Int!) {
@@ -44,22 +45,6 @@ const GET_BOARD_NAME = gql`
       title
     }
   }
-`;
-
-const ErrorBox = styled.form`
-  padding: 4em;
-  max-width: 400px;
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  margin-top: 50px;
-  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
-`;
-
-const ErrorMessage = styled.h2`
-  align-self: center;
 `;
 
 const UPDATE_LISTS_POSITION = gql`
@@ -164,12 +149,9 @@ export default function Board() {
       </Rotate>
     );
   if (error) {
-    const message = error.message.split(":");
-    return (
-      <ErrorBox>
-        <ErrorMessage>{message[1]}</ErrorMessage>
-      </ErrorBox>
-    );
+    const message = error.message.split(": ")[1];
+
+    return <ErrorMessage message={message} />;
   }
 
   return (
