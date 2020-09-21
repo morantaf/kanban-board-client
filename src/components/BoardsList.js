@@ -7,6 +7,7 @@ import BoardForm from "./BoardForm";
 import { useParams } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import ErrorMessage from "./ErrorMessage";
 
 const BOARDS_QUERY = gql`
   query Boards($userId: Int!) {
@@ -18,21 +19,21 @@ const BOARDS_QUERY = gql`
   }
 `;
 
-const ErrorBox = styled.form`
-  padding: 4em;
-  max-width: 400px;
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  margin-top: 50px;
-  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
-`;
+// const ErrorBox = styled.form`
+//   padding: 4em;
+//   max-width: 400px;
+//   background: white;
+//   border-radius: 5px;
+//   display: flex;
+//   flex-direction: column;
+//   margin: auto;
+//   margin-top: 50px;
+//   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
+// `;
 
-const ErrorMessage = styled.h2`
-  align-self: center;
-`;
+// const ErrorMessage = styled.h2`
+//   align-self: center;
+// `;
 
 const StyledTitle = styled.div`
   height: 80px;
@@ -124,23 +125,9 @@ function BoardsList() {
       </Rotate>
     );
   if (error) {
-    const message = error.message.split(":");
-    const authentication = message[1]
-      .split(" ")
-      .filter((word) => word.toLowerCase() === "authentication");
+    const message = error.message.split(": ")[1];
 
-    return authentication.length === 1 ? (
-      <ErrorBox>
-        <ErrorMessage>
-          You must login in order to access to your boards
-        </ErrorMessage>
-        <Link to="/login">Go to the login page</Link>{" "}
-      </ErrorBox>
-    ) : (
-      <ErrorBox>
-        <ErrorMessage>{message[1]}</ErrorMessage>
-      </ErrorBox>
-    );
+    return <ErrorMessage message={message} />;
   }
   return (
     <Container>
