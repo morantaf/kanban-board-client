@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
 import { Redirect, Link } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 //Creation of Styled components
 
@@ -17,6 +18,30 @@ const Form = styled.form`
   margin: auto;
   margin-top: 50px;
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
+`;
+
+const LoadingIcon = styled(AiOutlineLoading3Quarters)`
+  height: 5em;
+  width: 5em;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Rotate = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  animation: ${rotate} 2s linear infinite;
 `;
 
 const TextField = styled.input`
@@ -80,9 +105,13 @@ export default function LoginForm(props) {
       variables={{ email, password }}
       onCompleted={(data) => _confirm(data)}
     >
-      {(login, { data }) => (
+      {(login, { data, loading }) => (
         <div>
-          {loggedIn ? (
+          {loading ? (
+            <Rotate>
+              <LoadingIcon />
+            </Rotate>
+          ) : loggedIn ? (
             <Redirect to={`b/${data.login.userId}`} />
           ) : (
             <Form
