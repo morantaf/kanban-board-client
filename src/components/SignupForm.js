@@ -3,6 +3,10 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import { Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
+import lockIcon from "../img/icons8-security-lock-50.png";
+import mailIcon from "../img/icons8-new-post-50.png";
+import nameIcon from "../img/icons8-contact-50.png";
+import userIcon from "../img/icons8-user-50.png";
 
 //Creation of Styled components
 
@@ -18,12 +22,25 @@ const Form = styled.form`
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
 `;
 
-const TextField = styled.input`
+const TextField = styled.input.attrs((props) => ({
+  icon: props.icon || "",
+}))`
+  border: none;
+  border-bottom: 2px solid #b3b3b3;
+  background-image: url("${(props) => props.icon}");
+  background-size: 4%;
+  background-position: 2px 10px;
+  background-repeat: no-repeat;
   padding-top: 10px;
   padding-right: 2px;
   padding-bottom: 10px;
-  padding-left: 10px;
-  margin-bottom: 15px;
+  padding-left: 25px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+`;
+
+const Label = styled.label`
+  font-size: 0.9em;
 `;
 
 const Button = styled.button`
@@ -101,40 +118,50 @@ export default function LoginForm(props) {
             ) : (
               <>
                 <Title>Create an account</Title>
+                <Label>E-mail</Label>
                 <TextField
                   type="text"
                   value={email}
                   name="email"
-                  placeholder="E-mail address"
+                  placeholder="Type your e-mail address"
                   onChange={(event) => setEmail(event.target.value)}
+                  icon={mailIcon}
                 />
+                <Label>First name</Label>
                 <TextField
                   type="text"
                   value={firstName}
                   name="firstName"
-                  placeholder="First name"
+                  placeholder="Type your first name"
                   onChange={(event) => setFirstName(event.target.value)}
+                  icon={nameIcon}
                 />
+                <Label>Last name</Label>
                 <TextField
                   type="text"
                   value={lastName}
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder="Type your last Name"
                   onChange={(event) => setLastName(event.target.value)}
+                  icon={nameIcon}
                 />
+                <Label>Username</Label>
                 <TextField
                   type="text"
                   value={username}
                   name="username"
-                  placeholder="Username"
+                  placeholder="Type your username"
                   onChange={(event) => setUsername(event.target.value)}
+                  icon={userIcon}
                 />
+                <Label>Password</Label>
                 <TextField
                   type="password"
                   value={password}
                   name="password"
                   placeholder="Enter a password"
                   onChange={(event) => setPassword(event.target.value)}
+                  icon={lockIcon}
                 />
                 <Button type="submit">Sign up</Button>
                 <StyledLink to="/login">

@@ -5,6 +5,8 @@ import { saveTokens } from "../manage-tokens";
 import { Mutation } from "react-apollo";
 import { Redirect, Link } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import lockIcon from "../img/icons8-security-lock-50.png";
+import mailIcon from "../img/icons8-new-post-50.png";
 
 //Creation of Styled components
 
@@ -44,12 +46,25 @@ const Rotate = styled.div`
   animation: ${rotate} 2s linear infinite;
 `;
 
-const TextField = styled.input`
+const TextField = styled.input.attrs((props) => ({
+  icon: props.icon || "",
+}))`
+  border: none;
+  border-bottom: 1px solid;
+  background-image: url("${(props) => props.icon}");
+  background-size: 4%;
+  background-position: 2px 10px;
+  background-repeat: no-repeat;
   padding-top: 10px;
   padding-right: 2px;
   padding-bottom: 10px;
-  padding-left: 10px;
-  margin-bottom: 15px;
+  padding-left: 25px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+`;
+
+const Label = styled.label`
+  font-size: 0.9em;
 `;
 
 const Button = styled.button`
@@ -87,7 +102,7 @@ const LOGIN_USER = gql`
   }
 `;
 
-export default function LoginForm(props) {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setloggedIn] = useState(false);
@@ -122,19 +137,23 @@ export default function LoginForm(props) {
               }}
             >
               <Title>SIGN IN</Title>
+              <Label>E-mail</Label>
               <TextField
                 type="text"
                 value={email}
                 name="email"
-                placeholder="E-mail address"
+                placeholder="Type your e-mail address"
                 onChange={(event) => setEmail(event.target.value)}
+                icon={mailIcon}
               />
+              <Label>Password</Label>
               <TextField
                 type="password"
                 value={password}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Type your password"
                 onChange={(event) => setPassword(event.target.value)}
+                icon={lockIcon}
               />
               <Button type="submit">Log in</Button>
               <StyledLink to="/signup">
